@@ -18,5 +18,7 @@ export class TaskComponent implements OnInit {
     //this.tasks = this.dataHandlerService.getTasks();
   }
 
-
+  toggleTaskCompleted(task: Task) {
+    task.completed = !task.completed;
+  }
 }
