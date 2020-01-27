@@ -107,7 +107,8 @@ export class TestData {
     {
       id: 11,
       name: 'Организовать детский праздник ',
-      completed: false
+      completed: false,
+      category: TestData.categories[4]
     },
 
     {
@@ -137,7 +138,8 @@ export class TestData {
       id: 15,
       name: 'Сдать экзамен по Java Oracle',
       priority: TestData.priorities[2],
-      completed: true
+      completed: true,
+      category: TestData.categories[4]
     },
 
 
