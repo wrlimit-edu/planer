@@ -1,43 +1,25 @@
-import { Injectable } from '@angular/core';
-import { Category } from '../model/category';
-import { Task } from '../model/task';
-import { TestData } from '../data/test-data';
-import { BehaviorSubject } from 'rxjs';
-
+import {Injectable} from '@angular/core';
+import {Task} from '../model/Task';
+import {Observable} from 'rxjs';
+import {TaskArrayImpl} from "../dao/impl/task-array-impl";
+import {CategoryArrayImpl} from "../dao/impl/category-array-impl";
+import {Category} from "../model/category";
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataHandlerService {
+  private taskArray = new TaskArrayImpl();
+  private categoryArray = new CategoryArrayImpl();
 
-  taskSubject = new BehaviorSubject<Task[]>(TestData.tasks);
-  categoriesSubject = new BehaviorSubject<Category[]>(TestData.categories);
+  constructor() { }
 
-  constructor() {
-    this.fetchTasks();
+  getAllTasks(): Observable<Task[]> {
+    return this.taskArray.getAll();
   }
 
-  getCategories(): Category[] {
-    return TestData.categories;
-  }
-
-  fetchTasks() {
-    this.taskSubject.next(TestData.tasks);
-  }
-
-  getTasks(): Task[] {
-    return  TestData.tasks;
-  }
-
-  getTasksByCategory(category: Category): Task[] {
-    const tasks = TestData.tasks.filter(task => task.category === category);
-    console.log(tasks);
-    return tasks;
-  }
-
-  fetchTasksByCategory(category: Category) {
-    const tasks = TestData.tasks.filter(task => task.category === category);
-    console.log(tasks);
-    this.taskSubject.next(tasks);
+  getAllCategories(): Observable<Category[]>{
+    return this.categoryArray.getAll();
   }
 }

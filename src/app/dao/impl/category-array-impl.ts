@@ -1,8 +1,9 @@
-import { Common } from "../interface/common";
-import { Category } from "../../model/category";
-import { Observable } from "rxjs";
+import {ICategoryArray} from "../interface/icategory-array";
+import {Observable, of} from "rxjs";
+import {Category} from "../../model/category";
+import {TestData} from "../../data/test-data";
 
-export class CategoryArrayImpl implements Common<Category> {
+export class CategoryArrayImpl implements ICategoryArray {
   add(T): Observable<Category> {
     return undefined;
   }
@@ -16,6 +17,10 @@ export class CategoryArrayImpl implements Common<Category> {
   }
 
   getAll(): Observable<Category[]> {
+    return of(TestData.categories);
+  }
+
+  search(title: string): Observable<Category[]> {
     return undefined;
   }
 

@@ -1,10 +1,10 @@
-import { Common } from "./common";
-import { Category } from "../../model/category";
-import { Priority } from "../../model/priority";
-import { Observable } from "rxjs";
+import {ICommon} from "./icommon";
+import {Task} from "../../model/task";
+import {Category} from "../../model/category";
+import {Priority} from "../../model/priority";
+import {Observable} from "rxjs";
 
-export interface Task extends Common<Task> {
-
+export interface ITaskArray extends ICommon<Task> {
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]>;
 
   getCompletedCountInCategory(category: Category): Observable<number>;

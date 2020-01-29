@@ -1,7 +1,8 @@
-import { Priority } from "../interface/priority";
-import { Observable } from "rxjs";
+import {IPriorityArray} from "../interface/ipriority-array";
+import {Observable} from "rxjs";
+import {Priority} from "../../model/priority";
 
-export class PriorityArrayImpl implements Priority {
+export class PriorityArrayImpl implements IPriorityArray{
   add(T): Observable<Priority> {
     return undefined;
   }

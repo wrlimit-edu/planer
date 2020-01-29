@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { DataHandlerService } from '../../service/data-handler.service';
-import { Category } from '../../model/category';
+import {Component, OnInit} from '@angular/core';
+import {DataHandlerService} from '../../service/data-handler.service';
+import {Category} from '../../model/category';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
+
 export class CategoryComponent implements OnInit {
 
   categories: Category[];
@@ -14,11 +15,11 @@ export class CategoryComponent implements OnInit {
 
   constructor(private dataHandlerService: DataHandlerService) { }
 
-
   ngOnInit() {
-    this.categories = this.dataHandlerService.getCategories();
+    this.dataHandlerService.getAllCategories().subscribe(categories => this.categories = categories);
   }
 
+  /*
   getTasksByCategory(category: Category) {
     this.dataHandlerService.getTasks().filter(task => task.category === category);
   }
@@ -27,4 +28,6 @@ export class CategoryComponent implements OnInit {
     this.selected = category;
     this.dataHandlerService.fetchTasksByCategory(category);
   }
+  */
+
 }
