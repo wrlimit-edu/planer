@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DataHandlerService} from '../../service/data-handler.service';
 import {Task} from 'src/app/model/task';
 import {MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
@@ -17,12 +17,21 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
 
-  tasks: Task[];
+
+  private tasks: Task[];
+
+  @Input('tasks')
+  private set setTasks(tasks: Task[]) {
+    this.tasks = tasks;
+    this.refreshTable();
+  }
+
 
   constructor(private dataHandlerService: DataHandlerService) { }
 
   ngOnInit() {
-    this.dataHandlerService.getAllTasks().subscribe(tasks => this.tasks = tasks);
+    //this.dataHandlerService.getAllTasks().subscribe(tasks => this.tasks = tasks);
+
     this.dataSource = new MatTableDataSource();
     this.refreshTable();
   }
@@ -53,7 +62,13 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
   private refreshTable() {
 
+
+    if (!this.dataSource){
+      return;
+    }
+
     this.dataSource.data = this.tasks; // обновить источник данных (т.к. данные массива tasks обновились)
+
     this.addTableObjects();
 
     // когда получаем новые данные..
@@ -72,11 +87,13 @@ export class TaskComponent implements OnInit, AfterViewInit {
         case 'date': {
           return task.date ? task.date : null;
         }
+
         case 'title': {
           return task.name;
         }
       }
     };
+
   }
 
   private addTableObjects() {

@@ -1,6 +1,8 @@
 <div class="wrapper">
 
-  <app-category></app-category>
+  <app-category
+    (selectCategory)="onSelectCategory($event)"
+    [categories]="categories"></app-category>
 
   <div class="main-panel">
     <!-- Navbar -->
@@ -71,7 +73,7 @@
     <!-- End Navbar -->
     <div class="content">
       <div class="container-fluid">
-          <app-task></app-task>
+          <app-task [tasks]="tasks"></app-task>
       </div>
     </div>
     <footer class="footer">
