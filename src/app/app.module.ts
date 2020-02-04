@@ -6,22 +6,26 @@ import {CategoryComponent} from './view/category/category.component';
 import {DataHandlerService} from './service/data-handler.service';
 import {TaskComponent} from './view/task/task.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/material';
+import {MatPaginatorModule, MatSortModule, MatTableModule, MatDialogModule} from '@angular/material';
+import { EditTaskDialogComponent } from './dialog/edit-task-dialog/edit-task-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CategoryComponent,
-    TaskComponent
+    TaskComponent,
+    EditTaskDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
   providers: [DataHandlerService],
+  entryComponents: [EditTaskDialogComponent],
   bootstrap: [AppComponent]
 })
 
