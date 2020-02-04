@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataHandlerService} from '../../service/data-handler.service';
 import {Task} from 'src/app/model/task';
 import {MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
@@ -26,6 +26,8 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.refreshTable();
   }
 
+  @Output()
+  updateTask = new EventEmitter<Task>();
 
   constructor(private dataHandlerService: DataHandlerService) { }
 
@@ -63,7 +65,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   private refreshTable() {
 
 
-    if (!this.dataSource){
+    if (!this.dataSource) {
       return;
     }
 
@@ -87,7 +89,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
         case 'date': {
           return task.date ? task.date : null;
         }
-
         case 'title': {
           return task.name;
         }
@@ -101,4 +102,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator; // обновить компонент постраничности (кол-во записей, страниц)
   }
 
+  onClickTask(task: any) {
+    this.updateTask.emit(task);
+  }
 }

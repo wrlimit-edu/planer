@@ -17,17 +17,13 @@ export class AppComponent implements OnInit {
 
   private selectedCategory: Category = null;
 
-  constructor(
-    private dataHandler: DataHandlerService // фасад для работы с данными
-  ) {
-  }
+  constructor(private dataHandler: DataHandlerService) { }
 
   ngOnInit(): void {
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     //this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
     this.onSelectCategory(null); // показать все задачи
   }
-
 
   private onSelectCategory(category: Category) {
     this.selectedCategory = category;
@@ -39,7 +35,9 @@ export class AppComponent implements OnInit {
     ).subscribe(tasks => {
       this.tasks = tasks;
     });
-
   }
 
+  onUpdateTask(task: Task) {
+
+  }
 }
