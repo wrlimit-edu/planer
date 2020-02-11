@@ -23,7 +23,9 @@ export class TaskArrayImpl implements ITaskArray {
   }
 
   update(T): Observable<Task> {
-    return undefined;
+    const taskTmp = TestData.tasks.find(t => t.id === T.id); // обновляем по id
+    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, T);
+    return of(T);
   }
 
   getTaskByCategory(category: Category): Observable<Task[]> {
@@ -49,6 +51,7 @@ export class TaskArrayImpl implements ITaskArray {
   // поиск задач по параметрам
   // если значение null - параметр не нужно учитывать при поиске
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
+    console.log(TestData.tasks);
     return of(this.searchTodos(category, searchText, status, priority));
   }
 

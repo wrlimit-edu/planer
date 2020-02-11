@@ -1,6 +1,7 @@
 import {IPriorityArray} from "../interface/ipriority-array";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Priority} from "../../model/priority";
+import {TestData} from "../../data/test-data";
 
 export class PriorityArrayImpl implements IPriorityArray{
   add(T): Observable<Priority> {
@@ -16,7 +17,7 @@ export class PriorityArrayImpl implements IPriorityArray{
   }
 
   getAll(): Observable<Priority[]> {
-    return undefined;
+    return of(TestData.priorities);
   }
 
   update(T): Observable<Priority> {

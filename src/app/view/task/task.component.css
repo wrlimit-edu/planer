@@ -8,3 +8,13 @@ table {
 .mat-column-title {
   cursor: crosshair;
 }
+td {
+  padding: 0;
+}
+td:nth-child(1) {
+  width: 3px;
+}
+td:nth-child(2) {
+  width: 50px;
+  text-align: center;
+}

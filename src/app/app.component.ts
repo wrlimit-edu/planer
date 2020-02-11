@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Task} from "./model/task";
 import {Category} from "./model/category";
 import {DataHandlerService} from "./service/data-handler.service";
+import {Priority} from "./model/priority";
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,15 @@ export class AppComponent implements OnInit {
   }
 
   onUpdateTask(task: Task) {
-
+    this.dataHandler.updateTask(task).subscribe(() => {
+      this.dataHandler.searchTasks(
+        this.selectedCategory,
+        null,
+        null,
+        null
+      ).subscribe(tasks => {
+        this.tasks = tasks;
+      });
+    });
   }
 }
