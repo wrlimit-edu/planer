@@ -30,6 +30,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @Output()
   updateTask = new EventEmitter<Task>();
 
+  @Output()
+  deleteTask = new EventEmitter<Task>();
+
   constructor(private dataHandlerService: DataHandlerService, private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -115,6 +118,23 @@ export class TaskComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
+      if (result === 'complete') {
+        task.completed = true;
+        this.updateTask.emit(task);
+      }
+
+      if (result === 'activate') {
+        task.completed = false;
+        this.updateTask.emit(task);
+        return;
+      }
+
+      if (result === 'delete') {
+        this.deleteTask.emit(task);
+        return;
+      }
+
       if (result as Task) {
         this.updateTask.emit(task);
         return;

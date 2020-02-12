@@ -19,10 +19,10 @@ export class TestData {
   ];
 
   static priorities: Priority[] = [
-    {id: 1, name: 'Низкий', color: 'AQUA'},
-    {id: 2, name: 'Средний', color: 'LIME'},
-    {id: 3, name: 'Высокий', color: 'YELLOW'},
-    {id: 4, name: 'Срочно', color: 'RED'}
+    {id: 1, name: 'Низкий', color: '#FCC'},
+    {id: 2, name: 'Средний', color: '#F99'},
+    {id: 3, name: 'Высокий', color: '#F66'},
+    {id: 4, name: 'Срочно', color: '#F00'}
   ];
 
   static tasks: Task[] = [
@@ -79,7 +79,6 @@ export class TestData {
     }, {
       id: 9,
       name: 'Подтянуться 10 раз',
-      priority: TestData.priorities[2],
       completed: false,
       category: TestData.categories[4],
       date: new Date('2019-03-12')
@@ -92,6 +91,7 @@ export class TestData {
     }, {
       id: 11,
       name: 'Организовать детский праздник ',
+      priority: TestData.priorities[1],
       completed: false,
       category: TestData.categories[4]
     }, {
@@ -147,7 +147,7 @@ export class TestData {
     }, {
       id: 20,
       name: 'Футбол с сотрудниками',
-      priority: TestData.priorities[0],
+      priority: TestData.priorities[3],
       completed: false,
       category: TestData.categories[4],
       date: new Date('2019-03-17')

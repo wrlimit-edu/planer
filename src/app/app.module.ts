@@ -21,13 +21,15 @@ import {
   MatOptionModule,
   MatSelectModule
 } from '@angular/material';
+import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CategoryComponent,
     TaskComponent,
-    EditTaskDialogComponent
+    EditTaskDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,7 @@ import {
     MatSelectModule
   ],
   providers: [DataHandlerService],
-  entryComponents: [EditTaskDialogComponent],
+  entryComponents: [EditTaskDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 
