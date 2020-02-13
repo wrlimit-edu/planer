@@ -4,15 +4,20 @@ import {Category} from "../../model/category";
 import {TestData} from "../../data/test-data";
 
 export class CategoryArrayImpl implements ICategoryArray {
-  add(T): Observable<Category> {
-    return undefined;
-  }
 
-  delete(id: number): Observable<Category> {
+  add(category: Category): Observable<Category> {
     return undefined;
   }
 
   get(id: number): Observable<Category> {
+    return undefined;
+  }
+
+  update(category: Category): Observable<Category> {
+    return undefined;
+  }
+
+  delete(id: number): Observable<Category> {
     return undefined;
   }
 
@@ -24,7 +29,4 @@ export class CategoryArrayImpl implements ICategoryArray {
     return undefined;
   }
 
-  update(T): Observable<Category> {
-    return undefined;
-  }
 }

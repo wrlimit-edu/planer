@@ -6,36 +6,36 @@ import {Priority} from "../../model/priority";
 import {TestData} from "../../data/test-data";
 
 export class TaskArrayImpl implements ITaskArray {
-  add(T): Observable<Task> {
+
+  add(task: Task): Observable<Task> {
     return undefined;
   }
-
-  delete(id: number): Observable<Task> {
-    const taskTmp = TestData.tasks.find(t => t.id === id); // удаляем по id
-    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1);
-    console.log(taskTmp.name);
-    return of(taskTmp);
-  }
-
-
 
   get(id: number): Observable<Task> {
     return undefined;
+  }
+
+  update(task: Task): Observable<Task> {
+    const taskTmp = TestData.tasks.find(item => item.id === task.id);
+    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
+    return of(task);
+  }
+
+  delete(id: number): Observable<Task> {
+    const taskTmp = TestData.tasks.find(item => item.id === id);
+    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1);
+    return of(taskTmp);
   }
 
   getAll(): Observable<Task[]> {
     return of(TestData.tasks);
   }
 
-  update(T): Observable<Task> {
-    const taskTmp = TestData.tasks.find(t => t.id === T.id); // обновляем по id
-    TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, T);
-    return of(T);
-  }
-
+  /*
   getTaskByCategory(category: Category): Observable<Task[]> {
     return of(TestData.tasks.filter(task => task.category === category));
   }
+   */
 
   getCompletedCountInCategory(category: Category): Observable<number> {
     return undefined;
@@ -53,18 +53,15 @@ export class TaskArrayImpl implements ITaskArray {
     return undefined;
   }
 
-  // поиск задач по параметрам
-  // если значение null - параметр не нужно учитывать при поиске
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
-    console.log(TestData.tasks);
-    return of(this.searchTodos(category, searchText, status, priority));
+    return of(this.searchFilter(category, searchText, status, priority));
   }
 
-  private searchTodos(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
-    let allTasks = TestData.tasks;
+  private searchFilter(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
+    let tasks = TestData.tasks;
     if (category != null) {
-      allTasks = allTasks.filter(todo => todo.category === category);
+      tasks = tasks.filter(item => item.category === category);
     }
-    return allTasks; // отфильтрованный массив
+    return tasks;
   }
 }

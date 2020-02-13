@@ -4,11 +4,8 @@ import {Priority} from "../../model/priority";
 import {TestData} from "../../data/test-data";
 
 export class PriorityArrayImpl implements IPriorityArray{
-  add(T): Observable<Priority> {
-    return undefined;
-  }
 
-  delete(id: number): Observable<Priority> {
+  add(priority: Priority): Observable<Priority> {
     return undefined;
   }
 
@@ -16,11 +13,16 @@ export class PriorityArrayImpl implements IPriorityArray{
     return undefined;
   }
 
+  update(priority: Priority): Observable<Priority> {
+    return undefined;
+  }
+
+  delete(id: number): Observable<Priority> {
+    return undefined;
+  }
+
   getAll(): Observable<Priority[]> {
     return of(TestData.priorities);
   }
 
-  update(T): Observable<Priority> {
-    return undefined;
-  }
 }
