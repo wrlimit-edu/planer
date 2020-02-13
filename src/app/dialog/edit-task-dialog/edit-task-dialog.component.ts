@@ -11,16 +11,15 @@ import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component
   templateUrl: './edit-task-dialog.component.html',
   styleUrls: ['./edit-task-dialog.component.css']
 })
+
 export class EditTaskDialogComponent implements OnInit {
 
   private dialogTitle: string;
   private task: Task;
-
   private tmpTitle: string;
   private tmpPriority: Priority;
   private tmpCategory: Category;
   private tmpDate: Date;
-
   private priorities: Priority[];
   private categories: Category[];
 
@@ -35,12 +34,10 @@ export class EditTaskDialogComponent implements OnInit {
   ngOnInit() {
     this.task = this.data[0];
     this.dialogTitle = this.data[1];
-
     this.tmpTitle = this.task.name;
     this.tmpPriority = this.task.priority;
     this.tmpCategory = this.task.category;
     this.tmpDate = this.task.date;
-
     this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
     this.dataHandler.getAllPriorities().subscribe(items => this.priorities = items);
   }

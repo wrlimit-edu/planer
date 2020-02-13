@@ -18,26 +18,18 @@ export class CategoryComponent implements OnInit {
 
   selectedCategory: Category;
 
-  constructor(private dataHandlerService: DataHandlerService) { }
+  constructor(private dataHandlerService: DataHandlerService) {
+  }
 
   ngOnInit() {
-    //this.dataHandlerService.getAllCategories().subscribe(categories => this.categories = categories);
   }
-
-  /*
-  getTasksByCategory(category: Category) {
-    this.dataHandlerService.getTasks().filter(task => task.category === category);
-  }
-  */
 
   showTasksByCategory(category: Category) {
-        // если не изменилось значение, ничего не делать (чтобы лишний раз не делать запрос данных)
-        if (this.selectedCategory === category) {
-            return;
-        }
-        this.selectedCategory = category; // сохраняем выбранную категорию
-        // вызываем внешний обработчик и передаем туда выбранную категорию
-        this.tellToSubscribes.emit(this.selectedCategory);
+    if (this.selectedCategory === category) {
+      return;
+    }
+    this.selectedCategory = category;
+    this.tellToSubscribes.emit(this.selectedCategory);
   }
 
 }

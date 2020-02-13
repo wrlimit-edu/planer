@@ -27,20 +27,20 @@
 
       <ng-container matColumnDef="date">
         <th *matHeaderCellDef mat-header-cell> Срок</th>
-        <td *matCellDef="let task" [ngClass]="{'completed': task.completed, 'nodate': task.date == null}" mat-cell>
+        <td *matCellDef="let task" mat-cell>
           {{ task.date | date: "short" }}</td>
       </ng-container>
 
       <ng-container matColumnDef="priority">
         <th *matHeaderCellDef mat-header-cell> Приоритет</th>
-        <td *matCellDef="let task" [ngClass]="{'completed': task.completed, 'nopriority': task.priority == null}" mat-cell>
+        <td *matCellDef="let task" mat-cell>
           {{ task.priority ? task.priority.name : "Без приоритета" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header> Категория</th>
-        <td *matCellDef="let task" [class.completed]="" mat-cell>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
+        <td *matCellDef="let task" mat-cell>
           {{ task.category.name }}
         </td>
       </ng-container>
