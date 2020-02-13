@@ -16,12 +16,13 @@ export class EditTaskDialogComponent implements OnInit {
   private dialogTitle: string;
   private task: Task;
 
-  private categories: Category[];
-  private priorities: Priority[];
-
   private tmpTitle: string;
-  private tmpCategory: Category;
   private tmpPriority: Priority;
+  private tmpCategory: Category;
+  private tmpDate: Date;
+
+  private priorities: Priority[];
+  private categories: Category[];
 
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
@@ -34,10 +35,11 @@ export class EditTaskDialogComponent implements OnInit {
   ngOnInit() {
     this.task = this.data[0];
     this.dialogTitle = this.data[1];
-    this.tmpTitle = this.task.name;
 
-    this.tmpCategory = this.task.category;
+    this.tmpTitle = this.task.name;
     this.tmpPriority = this.task.priority;
+    this.tmpCategory = this.task.category;
+    this.tmpDate = this.task.date;
 
     this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
     this.dataHandler.getAllPriorities().subscribe(items => this.priorities = items);
@@ -45,8 +47,9 @@ export class EditTaskDialogComponent implements OnInit {
 
   private onConfirm(): void {
     this.task.name = this.tmpTitle;
-    this.task.category = this.tmpCategory;
     this.task.priority = this.tmpPriority;
+    this.task.category = this.tmpCategory;
+    this.task.date = this.tmpDate;
     this.dialogRef.close(this.task);
   }
 
