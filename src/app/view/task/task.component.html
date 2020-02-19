@@ -26,9 +26,10 @@
       </ng-container>
 
       <ng-container matColumnDef="date">
-        <th *matHeaderCellDef mat-header-cell> Срок</th>
+        <th *matHeaderCellDef mat-header-cell>Срок</th>
         <td *matCellDef="let task" mat-cell>
-          {{ task.date | date: "short" }}</td>
+          <!-- {{ task.date | date: "short" }}</td>-->
+          {{task.date | taskDate}}
       </ng-container>
 
       <ng-container matColumnDef="priority">
@@ -42,6 +43,38 @@
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
         <td *matCellDef="let task" mat-cell>
           {{ task.category.name }}
+        </td>
+      </ng-container>
+
+
+      <!--доступные действия над задачей-->
+      <ng-container matColumnDef="check">
+        <th mat-header-cell *matHeaderCellDef>Check</th>
+        <td class="col-check" mat-cell *matCellDef="let task">
+
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? onToggleStatus(task) : null"
+            [checked]="task.completed"
+          >
+          </mat-checkbox>
+
+        </td>
+      </ng-container>
+
+      <!--доступные действия над задачей-->
+      <ng-container matColumnDef="operations">
+        <th mat-header-cell *matHeaderCellDef>Operations</th>
+        <td class="col-operations" mat-cell *matCellDef="let task">
+
+          <button mat-icon-button (click)="openDeleteDialog(task)" class="delete-icon">
+            <mat-icon aria-hidden="false">delete</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="openEditTaskDialog(task)" class="edit-icon">
+            <mat-icon aria-hidden="false">edit</mat-icon>
+          </button>
+
         </td>
       </ng-container>
 

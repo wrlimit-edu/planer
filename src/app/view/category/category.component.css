@@ -1,1 +1,9 @@
-
+.categoryItem {
+  display: flex;
+  justify-content: space-between;
+}
+.categoryItem a,
+.categoryItem i {
+  padding: 0;
+  margin: 0;
+}

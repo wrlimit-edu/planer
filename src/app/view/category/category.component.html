@@ -11,13 +11,22 @@
         </a>
       </li>
       <li class="nav-item pointer"
-          *ngFor="let category of categories;"
+          *ngFor="let category of categories; let index = index " [class.active]="category === selectedCategory"
           (click)="showTasksByCategory(category)"
           [class.active]="category === selectedCategory"
+          (mouseleave)="showEditIcon(null)"
+          (mouseenter)="showEditIcon(index)"
+          class="nav-item pointer"
       >
         <a class="nav-link">
-          <i class="material-icons">{{ category.icon }}</i>
-          <p>{{ category.name }}</p>
+          <div class="categoryItem">
+              <i class="material-icons">{{ category.icon }}</i>
+              <p>{{ category.name }}</p>
+              <i
+                class="material-icons"
+                (click)="$event.stopPropagation(); openEditDialog(category)"
+              >settings</i>
+          </div>
         </a>
       </li>
     </ul>

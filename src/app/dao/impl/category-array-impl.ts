@@ -13,12 +13,21 @@ export class CategoryArrayImpl implements ICategoryArray {
     return undefined;
   }
 
-  update(category: Category): Observable<Category> {
-    return undefined;
+  delete(id: number): Observable<Category> {
+    TestData.tasks.forEach(task => {
+      if (task.category && task.category.id === id) {
+        task.category = null;
+      }
+    });
+    const tmpCategory = TestData.categories.find(t => t.id === id); // удаляем по id
+    TestData.categories.splice(TestData.categories.indexOf(tmpCategory), 1);
+    return of(tmpCategory);
   }
 
-  delete(id: number): Observable<Category> {
-    return undefined;
+  update(category: Category): Observable<Category> {
+    const tmpCategory = TestData.categories.find(t => t.id === category.id); // обновляем по id
+    TestData.categories.splice(TestData.categories.indexOf(tmpCategory), 1, category);
+    return of(tmpCategory);
   }
 
   getAll(): Observable<Category[]> {
