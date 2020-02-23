@@ -23,6 +23,7 @@ export class EditTaskDialogComponent implements OnInit {
   private priorities: Priority[];
   private categories: Category[];
 
+
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Task, string],

@@ -13,16 +13,19 @@ import {Priority} from "./model/priority";
 export class AppComponent implements OnInit {
   title = 'planer';
 
-  tasks: Task[];
-  categories: Category[];
-
+  private tasks: Task[];
+  private categories: Category[];
+  private priorities: Priority[]; // все приоритеты
   private selectedCategory: Category = null;
+  private searchTaskText = '';
+  private statusFilter: boolean;
+  private priorityFilter: Priority;
 
   constructor(private dataHandler: DataHandlerService) { }
 
   ngOnInit(): void {
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
-    //this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
+    this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
     this.onSelectCategory(null); // показать все задачи
   }
 
@@ -74,6 +77,39 @@ export class AppComponent implements OnInit {
   private onUpdateCategory(category: Category) {
     this.dataHandler.updateCategory(category).subscribe(() => {
       this.onSelectCategory(this.selectedCategory);
+    });
+  }
+
+  private onSearchTasks(searchString: string) {
+    this.searchTaskText = searchString;
+    this.updateTasks();
+  }
+
+  private onFilterTasksByStatus(status: boolean) {
+    this.statusFilter = status;
+    this.updateTasks();
+  }
+
+  private onFilterByPriority(priority: Priority) {
+    this.priorityFilter = priority;
+    this.updateTasks();
+  }
+
+
+  private updateTasks() {
+    this.dataHandler.searchTasks(
+      this.selectedCategory,
+      this.searchTaskText,
+      this.statusFilter,
+      this.priorityFilter
+    ).subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
+    });
+  }
+
+  onAddTask(task: Task) {
+    this.dataHandler.addTask(task).subscribe(result => {
+      this.updateTasks();
     });
   }
 }

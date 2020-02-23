@@ -8,7 +8,15 @@ import {TestData} from "../../data/test-data";
 export class TaskArrayImpl implements ITaskArray {
 
   add(task: Task): Observable<Task> {
-    return undefined;
+    if (task.id === null || task.id === 0) {
+      task.id = this.getLastIdTask() + 1;
+    }
+    TestData.tasks.push(task);
+    return of(task);
+  }
+
+  private getLastIdTask(): number {
+    return Math.max.apply(Math, TestData.tasks.map(task => task.id));
   }
 
   get(id: number): Observable<Task> {
@@ -58,10 +66,28 @@ export class TaskArrayImpl implements ITaskArray {
   }
 
   private searchFilter(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
-    let tasks = TestData.tasks;
-    if (category != null) {
-      tasks = tasks.filter(item => item.category === category);
+    let allTasks = TestData.tasks;
+
+    // поочереди применяем все условия (какие не пустые)
+    if (status != null) {
+      allTasks = allTasks.filter(task => task.completed === status);
     }
-    return tasks;
+
+    if (category != null) {
+      allTasks = allTasks.filter(task => task.category === category);
+    }
+
+    if (priority != null) {
+      allTasks = allTasks.filter(task => task.priority === priority);
+    }
+
+    if (searchText != null) {
+      allTasks = allTasks.filter(
+        task =>
+          task.name.toUpperCase().includes(searchText.toUpperCase()) // учитываем текст поиска (если '' - возвращаются все значения)
+      );
+    }
+
+    return allTasks;
   }
 }

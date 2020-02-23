@@ -4,6 +4,9 @@ import {Task} from 'src/app/model/task';
 import {MatSort, MatTableDataSource, MatPaginator, MatDialog} from '@angular/material';
 import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
+import {Priority} from "../../model/priority";
+import {Category} from "../../model/category";
+import {OperType} from "../../dialog/oper-type.enum";
 
 @Component({
   selector: 'app-task',
@@ -13,14 +16,16 @@ import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog
 
 export class TaskComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'check', 'operations'];
-  dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
+  private displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'check', 'operations'];
+  private dataSource: MatTableDataSource<Task>;
+  private searchTaskText: string;
+  private selectedStatusFilter: boolean = null;
+  private tasks: Task[];
+  private priorities: Priority[];
+  private selectedPriorityFilter: Priority = null;
 
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
-
-
-  private tasks: Task[];
 
   @Input('tasks')
   private set setTasks(tasks: Task[]) {
@@ -28,11 +33,34 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.refreshTable();
   }
 
+  @Input('priorities')
+  set setPriorities(priorities: Priority[]) {
+    this.priorities = priorities;
+  }
+
+  @Input()
+  selectedCategory: Category;
+
+  @Output()
+  selectCategory = new EventEmitter<Category>();
+
   @Output()
   updateTask = new EventEmitter<Task>();
 
   @Output()
   deleteTask = new EventEmitter<Task>();
+
+  @Output()
+  filterByTitle = new EventEmitter<string>();
+
+  @Output()
+  filterByStatus = new EventEmitter<boolean>();
+
+  @Output()
+  filterByPriority = new EventEmitter<Priority>();
+
+  @Output()
+  addTask = new EventEmitter<Task>();
 
   constructor(private dataHandlerService: DataHandlerService, private dialog: MatDialog) { }
 
@@ -160,5 +188,34 @@ export class TaskComponent implements OnInit, AfterViewInit {
   onToggleStatus(task: Task) {
     task.completed = !task.completed;
     this.updateTask.emit(task);
+  }
+
+  // фильтрация по названию
+  private onFilterByTitle() {
+    this.filterByTitle.emit(this.searchTaskText);
+  }
+
+  private onFilterByStatus(value: boolean) {
+    if (value !== this.selectedStatusFilter) {
+      this.selectedStatusFilter = value;
+      this.filterByStatus.emit(this.selectedStatusFilter);
+    }
+  }
+
+  private onFilterByPriority(value: Priority) {
+    if (value !== this.selectedPriorityFilter) {
+      this.selectedPriorityFilter = value;
+      this.filterByPriority.emit(this.selectedPriorityFilter);
+    }
+  }
+
+  private openAddTaskDialog() {
+    const task = new Task(null, '', false, null, this.selectedCategory);
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи', OperType.ADD ]});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) { // если нажали ОК и есть результат
+        this.addTask.emit(task);
+      }
+    });
   }
 }
