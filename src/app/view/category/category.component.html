@@ -1,6 +1,45 @@
 <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
   <div class="sidebar-wrapper">
+
+
+    <!--      поиск категорий -->
+    <div class="search-category-area">
+      <mat-form-field class="example-full-width">
+        <input
+          #inputSearchCategory
+          (keydown.escape)="searchCategoryTitle = ''; search()"
+          (keyup)="search()"
+          [(ngModel)]="searchCategoryTitle"
+          matInput
+          maxlength="256"
+          placeholder="Поиск категорий"
+        />
+        <button
+          (click)="searchCategoryTitle = ''; search()"
+          *ngIf="inputSearchCategory.value.trim().length > 0" aria-label="Clear"
+          class="search-category-button size25 gray"
+          mat-button
+          mat-icon-button
+          matSuffix
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+
     <ul class="nav">
+
+      <li class="nav-item pointer"
+          (click)="openAddDialog()"
+          [class.add]=""
+      >
+        <a class="nav-link">
+          <i class="material-icons">add_circle_outline</i>
+          <p>Добавить категорию</p>
+        </a>
+      </li>
+
       <li class="nav-item pointer"
           (click)="showTasksByCategory(null)"
           [class.active]="selectedCategory == null"
@@ -27,16 +66,6 @@
                 (click)="$event.stopPropagation(); openEditDialog(category)"
               >settings</i>
           </div>
-        </a>
-      </li>
-
-      <li class="nav-item pointer"
-          (click)="showTasksByCategory(null)"
-          [class.add]=""
-      >
-        <a class="nav-link">
-          <i class="material-icons">add_circle_outline</i>
-          <p>Добавить категорию</p>
         </a>
       </li>
 

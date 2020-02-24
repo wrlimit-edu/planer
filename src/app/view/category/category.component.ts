@@ -28,11 +28,18 @@ export class CategoryComponent implements OnInit {
   @Output()
   updateCategory = new EventEmitter<Category>();
 
+  // добавить категорию
+  @Output()
+  addCategory = new EventEmitter<string>();
+
+  // поиск категории
+  @Output()
+  searchCategory = new EventEmitter<string>(); // передаем строку для поиска
+
   @Input()
   selectedCategory: Category;
-  indexMouseMove: number;
 
-  private addCategory: any;
+  searchCategoryTitle: string;
 
   constructor(private dataHandlerService: DataHandlerService, private dialog: MatDialog) {
   }
@@ -40,7 +47,7 @@ export class CategoryComponent implements OnInit {
   ngOnInit() {
   }
 
-  showTasksByCategory(category: Category) {
+  private showTasksByCategory(category: Category) {
     if (this.selectedCategory === category) {
       return;
     }
@@ -48,18 +55,11 @@ export class CategoryComponent implements OnInit {
     this.selectCategory.emit(this.selectedCategory);
   }
 
-  private showEditIcon(index: number) {
-    this.indexMouseMove = index;
-  }
-
   private openAddDialog() {
-    const dialogRef = this.dialog.open(EditCategoryDialogComponent,
-      {data: ['', 'Добавление категории', OperType.ADD],
-        width: '400px'
-      });
+    const dialogRef = this.dialog.open(EditCategoryDialogComponent, {data: ['', 'Добавление категории'], width: '400px'});
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.addCategory.emit(result as string);
+        this.addCategory.emit(result as string); // вызываем внешний обработчик
       }
     });
   }
@@ -80,5 +80,19 @@ export class CategoryComponent implements OnInit {
         return;
       }
     });
+  }
+
+  // поиск категории
+
+  // поиск категории
+  private search() {
+    if (this.searchCategoryTitle == null ) {
+      return;
+    }
+    this.searchCategory.emit(this.searchCategoryTitle);
+  }
+
+  showEditIcon(param) {
+
   }
 }

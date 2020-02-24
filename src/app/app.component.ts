@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   private searchTaskText = '';
   private statusFilter: boolean;
   private priorityFilter: Priority;
+  private searchCategoryText: string;
 
   constructor(private dataHandler: DataHandlerService) { }
 
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onUpdateTask(task: Task) {
+  private onUpdateTask(task: Task) {
     this.dataHandler.updateTask(task).subscribe(() => {
       this.dataHandler.searchTasks(
         this.selectedCategory,
@@ -54,7 +55,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onDeleteTask(task: Task) {
+  private onDeleteTask(task: Task) {
     this.dataHandler.deleteTask(task.id).subscribe(() => {
       this.dataHandler.searchTasks(
         this.selectedCategory,
@@ -95,7 +96,6 @@ export class AppComponent implements OnInit {
     this.updateTasks();
   }
 
-
   private updateTasks() {
     this.dataHandler.searchTasks(
       this.selectedCategory,
@@ -107,9 +107,24 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onAddTask(task: Task) {
+  private onAddTask(task: Task) {
     this.dataHandler.addTask(task).subscribe(result => {
       this.updateTasks();
+    });
+  }
+
+  private onAddCategory(title: string) {
+    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories());
+  }
+
+  private updateCategories() {
+    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+  }
+
+  private onSearchCategory(title: string) {
+    this.searchCategoryText = title;
+    this.dataHandler.searchCategories(title).subscribe(categories => {
+      this.categories = categories;
     });
   }
 }

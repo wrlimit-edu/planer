@@ -7,7 +7,6 @@ import {Category} from "../model/category";
 import {Priority} from "../model/priority";
 import {PriorityArrayImpl} from "../dao/impl/priority-array-impl";
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +30,6 @@ export class DataHandlerService {
     return this.priorityArray.getAll();
   }
 
-  // поиск задач по параметрам
   searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
     return this.taskArray.search(category, searchText, status, priority);
   }
@@ -54,5 +52,13 @@ export class DataHandlerService {
 
   addTask(task: Task): Observable<Task> {
     return this.taskArray.add(task);
+  }
+
+  addCategory(title:string):Observable<Category>{
+    return this.categoryArray.add(new Category(null, title));
+  }
+
+  searchCategories(title: string): Observable<Category[]> {
+    return this.categoryArray.search(title);
   }
 }
