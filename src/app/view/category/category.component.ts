@@ -28,10 +28,6 @@ export class CategoryComponent implements OnInit {
   @Output()
   updateCategory = new EventEmitter<Category>();
 
-  // изменили категорию
-  @Output()
-  updateCategory = new EventEmitter<Category>();
-
   @Input()
   selectedCategory: Category;
   indexMouseMove: number;
