@@ -3,6 +3,7 @@ import {Task} from "./model/task";
 import {Category} from "./model/category";
 import {DataHandlerService} from "./service/data-handler.service";
 import {Priority} from "./model/priority";
+import {zip} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -15,12 +16,16 @@ export class AppComponent implements OnInit {
 
   private tasks: Task[];
   private categories: Category[];
-  private priorities: Priority[]; // все приоритеты
+  private priorities: Priority[];
   private selectedCategory: Category = null;
   private searchTaskText = '';
   private statusFilter: boolean;
   private priorityFilter: Priority;
   private searchCategoryText: string;
+  private totalTasksCountInCategory: number;
+  private completedCountInCategory: number;
+  private uncompletedCountInCategory: number;
+  private uncompletedTotalTasksCount: number;
 
   constructor(private dataHandler: DataHandlerService) { }
 
@@ -28,6 +33,12 @@ export class AppComponent implements OnInit {
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
     this.onSelectCategory(null); // показать все задачи
+  }
+
+  /* CATEGORY */
+
+  private onAddCategory(title: string) {
+    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories());
   }
 
   private onSelectCategory(category: Category) {
@@ -40,6 +51,40 @@ export class AppComponent implements OnInit {
     ).subscribe(tasks => {
       this.tasks = tasks;
     });
+    this.updateTasksAndStat();
+  }
+
+  private onUpdateCategory(category: Category) {
+    this.dataHandler.updateCategory(category).subscribe(() => {
+      this.onSelectCategory(this.selectedCategory);
+    });
+  }
+
+  private onDeleteCategory(category: Category) {
+    this.dataHandler.deleteCategory(category.id).subscribe(cat => {
+      this.selectedCategory = null; // открываем категорию "Все"
+      this.onSelectCategory(this.selectedCategory);
+    });
+  }
+
+  private onSearchCategory(title: string) {
+    this.searchCategoryText = title;
+    this.dataHandler.searchCategories(title).subscribe(categories => {
+      this.categories = categories;
+    });
+  }
+
+  private updateCategories() {
+    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+  }
+
+  /* TASK */
+
+  private onAddTask(task: Task) {
+    this.dataHandler.addTask(task).subscribe(result => {
+      this.updateTasks();
+    });
+    this.updateTasksAndStat();
   }
 
   private onUpdateTask(task: Task) {
@@ -53,6 +98,7 @@ export class AppComponent implements OnInit {
         this.tasks = tasks;
       });
     });
+    this.updateTasksAndStat();
   }
 
   private onDeleteTask(task: Task) {
@@ -66,19 +112,7 @@ export class AppComponent implements OnInit {
         this.tasks = tasks;
       });
     });
-  }
-
-  private onDeleteCategory(category: Category) {
-    this.dataHandler.deleteCategory(category.id).subscribe(cat => {
-      this.selectedCategory = null; // открываем категорию "Все"
-      this.onSelectCategory(this.selectedCategory);
-    });
-  }
-
-  private onUpdateCategory(category: Category) {
-    this.dataHandler.updateCategory(category).subscribe(() => {
-      this.onSelectCategory(this.selectedCategory);
-    });
+    this.updateTasksAndStat();
   }
 
   private onSearchTasks(searchString: string) {
@@ -107,24 +141,23 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private onAddTask(task: Task) {
-    this.dataHandler.addTask(task).subscribe(result => {
-      this.updateTasks();
-    });
+  private updateTasksAndStat() {
+    this.updateTasks();
+    this.updateStat();
   }
 
-  private onAddCategory(title: string) {
-    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories());
-  }
+  private updateStat() {
+    zip(
+      this.dataHandler.getTotalCountInCategory(this.selectedCategory),
+      this.dataHandler.getCompletedCountInCategory(this.selectedCategory),
+      this.dataHandler.getUncompletedCountInCategory(this.selectedCategory),
+      this.dataHandler.getUncompletedTotalCount())
 
-  private updateCategories() {
-    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
-  }
-
-  private onSearchCategory(title: string) {
-    this.searchCategoryText = title;
-    this.dataHandler.searchCategories(title).subscribe(categories => {
-      this.categories = categories;
-    });
+      .subscribe(array => {
+        this.totalTasksCountInCategory = array[0];
+        this.completedCountInCategory = array[1];
+        this.uncompletedCountInCategory = array[2];
+        this.uncompletedTotalTasksCount = array[3]; // нужно для категории Все
+      });
   }
 }

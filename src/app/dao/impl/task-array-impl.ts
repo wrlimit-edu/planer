@@ -45,20 +45,24 @@ export class TaskArrayImpl implements ITaskArray {
   }
    */
 
+  // кол-во завершенных задач в заданной категории (если category === null, то для всех категорий)
   getCompletedCountInCategory(category: Category): Observable<number> {
-    return undefined;
+    return of(this.searchFilter(category, null, true, null).length);
   }
 
-  getTotalCount(): Observable<number> {
-    return undefined;
-  }
-
-  getTotalCountInCategory(category: Category): Observable<number> {
-    return undefined;
-  }
-
+  // кол-во незавершенных задач в заданной категории (если category === null, то для всех категорий)
   getUncompletedCountInCategory(category: Category): Observable<number> {
-    return undefined;
+    return of(this.searchFilter(category, null, false, null).length);
+  }
+
+  // кол-во всех задач в заданной категории (если category === null, то для всех категорий)
+  getTotalCountInCategory(category: Category): Observable<number> {
+    return of(this.searchFilter(category, null, null, null).length);
+  }
+
+  // кол-во всех задач в общем
+  getTotalCount(): Observable<number> {
+    return of(TestData.tasks.length);
   }
 
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
