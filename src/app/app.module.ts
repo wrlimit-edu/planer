@@ -30,9 +30,13 @@ import localeRu from '@angular/common/locales/ru';
 import {EditCategoryDialogComponent} from './dialog/edit-category-dialog/edit-category-dialog.component';
 import {AboutDialogComponent} from './dialog/about-dialog/about-dialog.component';
 import {FooterComponent} from "./view/footer/footer.component";
-import { HeaderComponent } from './view/header/header.component';
-import { StatisticComponent } from './view/statistic/statistic.component';
-import { StatisticCardComponent } from './view/statistic/statistic-card/statistic-card.component';
+import {HeaderComponent} from './view/header/header.component';
+import {StatisticComponent} from './view/statistic/statistic.component';
+import {StatisticCardComponent} from './view/statistic/statistic-card/statistic-card.component';
+import {ColorPickerModule} from "ngx-color-picker";
+import { SettingsDialogComponent } from './dialog/settings-dialog/settings-dialog.component';
+import { PrioritiesComponent } from './view/priorities/priorities.component';
+import { EditPriorityDialogComponent } from './dialog/edit-priority-dialog/edit-priority-dialog.component';
 
 registerLocaleData(localeRu);
 
@@ -49,7 +53,10 @@ registerLocaleData(localeRu);
     AboutDialogComponent,
     HeaderComponent,
     StatisticComponent,
-    StatisticCardComponent
+    StatisticCardComponent,
+    SettingsDialogComponent,
+    PrioritiesComponent,
+    EditPriorityDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,10 +74,18 @@ registerLocaleData(localeRu);
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ColorPickerModule
   ],
   providers: [DataHandlerService],
-  entryComponents: [EditTaskDialogComponent, ConfirmDialogComponent, EditCategoryDialogComponent, AboutDialogComponent],
+  entryComponents: [
+    EditTaskDialogComponent,
+    ConfirmDialogComponent,
+    EditCategoryDialogComponent,
+    AboutDialogComponent,
+    SettingsDialogComponent,
+    EditPriorityDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 
