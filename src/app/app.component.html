@@ -8,6 +8,8 @@
     (searchCategory)="onSearchCategory($event)"
     [selectedCategory]="selectedCategory"
     [categories]="categories"
+    [categoryMap]="categoryMap"
+    [uncompletedTotal]="uncompletedTotalTasksCount"
   ></app-category>
 
   <div class="main-panel">
@@ -37,7 +39,6 @@
             (filterByPriority)="onFilterByPriority($event)"
             (filterByTitle)="onSearchTasks($event)"
             [priorities]="priorities"
-
             (selectCategory)="onSelectCategory($event)"
             (addTask)="onAddTask($event)"
             [selectedCategory]="selectedCategory"
