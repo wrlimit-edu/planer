@@ -11,7 +11,6 @@ export class PriorityArrayImpl implements IPriorityArray{
   }
 
   getAll(): Observable<Priority[]> {
-
     return of(TestData.priorities);
   }
 
