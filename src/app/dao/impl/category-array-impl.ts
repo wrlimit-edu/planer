@@ -44,6 +44,12 @@ export class CategoryArrayImpl implements ICategoryArray {
     return of(TestData.categories);
   }
 
+
+
+
+
+
+
   search(title: string): Observable<Category[]> {
     return of(TestData.categories.filter(
       cat => cat.name.toUpperCase().includes(title.toUpperCase()))

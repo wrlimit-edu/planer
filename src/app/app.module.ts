@@ -37,6 +37,9 @@ import {ColorPickerModule} from "ngx-color-picker";
 import { SettingsDialogComponent } from './dialog/settings-dialog/settings-dialog.component';
 import { PrioritiesComponent } from './view/priorities/priorities.component';
 import { EditPriorityDialogComponent } from './dialog/edit-priority-dialog/edit-priority-dialog.component';
+import {HttpClientModule} from "@angular/common/http";
+import {PriorityService} from "./service/priority.service";
+import {CategoryService} from "./service/category.service";
 
 registerLocaleData(localeRu);
 
@@ -75,9 +78,14 @@ registerLocaleData(localeRu);
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    ColorPickerModule
+    ColorPickerModule,
+    HttpClientModule
   ],
-  providers: [DataHandlerService],
+  providers: [
+    DataHandlerService,
+    CategoryService,
+    PriorityService
+  ],
   entryComponents: [
     EditTaskDialogComponent,
     ConfirmDialogComponent,

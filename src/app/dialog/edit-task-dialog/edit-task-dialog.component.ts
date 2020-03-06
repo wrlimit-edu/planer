@@ -5,6 +5,8 @@ import {Task} from "../../model/task";
 import {Category} from "../../model/category";
 import {Priority} from "../../model/priority";
 import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
+import {PriorityService} from "../../service/priority.service";
+import {CategoryService} from "../../service/category.service";
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -28,6 +30,8 @@ export class EditTaskDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Task, string],
     private dataHandler: DataHandlerService,
+    private categoryService: CategoryService,
+    private priorityService: PriorityService,
     private dialog: MatDialog
   ) {
   }
@@ -39,8 +43,8 @@ export class EditTaskDialogComponent implements OnInit {
     this.tmpPriority = this.task.priority;
     this.tmpCategory = this.task.category;
     this.tmpDate = this.task.date;
-    this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
-    this.dataHandler.getAllPriorities().subscribe(items => this.priorities = items);
+    this.categoryService.getAllCategories().subscribe(items => this.categories = items);
+    this.priorityService.getAllPriorities().subscribe(items => this.priorities = items);
   }
 
   private onConfirm(): void {

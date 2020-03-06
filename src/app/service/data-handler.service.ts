@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Task} from '../model/Task';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {TaskArrayImpl} from "../dao/impl/task-array-impl";
 import {CategoryArrayImpl} from "../dao/impl/category-array-impl";
 import {Category} from "../model/category";
 import {Priority} from "../model/priority";
 import {PriorityArrayImpl} from "../dao/impl/priority-array-impl";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -16,30 +17,14 @@ export class DataHandlerService {
   private categoryArray = new CategoryArrayImpl();
   private priorityArray = new PriorityArrayImpl();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getAllTasks(): Observable<Task[]> {
-    return this.taskArray.getAll();
-  }
 
-  getAllCategories(): Observable<Category[]>{
+
+  /* CATEGORY *
+
+  getAllCategories(): Observable<Category[]> {
     return this.categoryArray.getAll();
-  }
-
-  getAllPriorities(): Observable<Priority[]>{
-    return this.priorityArray.getAll();
-  }
-
-  searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
-    return this.taskArray.search(category, searchText, status, priority);
-  }
-
-  updateTask(task: Task): Observable<Task> {
-      return this.taskArray.update(task);
-  }
-
-  deleteTask(id: number): Observable<Task> {
-    return this.taskArray.delete(id);
   }
 
   updateCategory(category: Category): Observable<Category> {
@@ -50,10 +35,6 @@ export class DataHandlerService {
     return this.categoryArray.delete(id);
   }
 
-  addTask(task: Task): Observable<Task> {
-    return this.taskArray.add(task);
-  }
-
   addCategory(title:string):Observable<Category>{
     return this.categoryArray.add(new Category(null, title));
   }
@@ -62,8 +43,52 @@ export class DataHandlerService {
     return this.categoryArray.search(title);
   }
 
-  getCompletedCountInCategory(category: Category): Observable<number> {
-    return this.taskArray.getCompletedCountInCategory(category);
+  /* PRIORITY *
+
+  addPriority(priority: Priority): Observable<any> {
+    return this.http.post('http://localhost:8889/api/priority/create', priority);
+  }
+
+  updatePriority(priority: Priority): Observable<any> {
+    return this.http.post('http://localhost:8889/api/priority/update', priority);
+  }
+
+  deletePriority(id: number): Observable<any> {
+    return this.http.get('http://localhost:8889/api/priority/delete/' + id);
+  }
+
+  getAllPriorities(): Observable<any> {
+    return this.http.get('http://localhost:8889/api/priority/list');
+  }
+
+
+
+
+
+
+
+
+
+  /* TASK */
+
+  getAllTasks(): Observable<Task[]> {
+    return this.taskArray.getAll();
+  }
+
+  searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
+    return this.taskArray.search(category, searchText, status, priority);
+  }
+
+  updateTask(task: Task): Observable<Task> {
+    return this.taskArray.update(task);
+  }
+
+  deleteTask(id: number): Observable<Task> {
+    return this.taskArray.delete(id);
+  }
+
+  addTask(task: Task): Observable<Task> {
+    return this.taskArray.add(task);
   }
 
   getUncompletedTotalCount(): Observable<number> {
@@ -78,15 +103,7 @@ export class DataHandlerService {
     return this.taskArray.getTotalCountInCategory(category);
   }
 
-  addPriority(priority: Priority): Observable<Priority> {
-    return this.priorityArray.add(priority);
-  }
-
-  deletePriority(id: number): Observable<Priority> {
-    return this.priorityArray.delete(id);
-  }
-
-  updatePriority(priority: Priority): Observable<Priority> {
-    return this.priorityArray.update(priority);
+  getCompletedCountInCategory(category: Category): Observable<number> {
+    return this.taskArray.getCompletedCountInCategory(category);
   }
 }

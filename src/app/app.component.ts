@@ -5,6 +5,8 @@ import {DataHandlerService} from "./service/data-handler.service";
 import {Priority} from "./model/priority";
 import {zip} from "rxjs";
 import {concatMap, map} from "rxjs/operators";
+import {PriorityService} from "./service/priority.service";
+import {CategoryService} from "./service/category.service";
 
 @Component({
   selector: 'app-root',
@@ -29,11 +31,15 @@ export class AppComponent implements OnInit {
   private uncompletedTotalTasksCount: number;
   private categoryMap = new Map<Category, number>();
 
-  constructor(private dataHandler: DataHandlerService) { }
+  constructor(
+    private dataHandler: DataHandlerService,
+    private categoryService: CategoryService,
+    private priorityService: PriorityService
+  ) { }
 
   ngOnInit(): void {
-    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
-    this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
+    this.categoryService.getAllCategories().subscribe(categories => this.categories = categories);
+    this.priorityService.getAllPriorities().subscribe(priorities => this.priorities = priorities);
     this.fillCategories();
     this.onSelectCategory(null);
   }
@@ -41,7 +47,7 @@ export class AppComponent implements OnInit {
   /* CATEGORY */
 
   private onAddCategory(title: string) {
-    this.dataHandler.addCategory(title).subscribe(() => this.updateCategories());
+    this.categoryService.addCategory(name).subscribe(() => this.updateCategories());
   }
 
   private onSelectCategory(category: Category) {
@@ -58,13 +64,13 @@ export class AppComponent implements OnInit {
   }
 
   private onUpdateCategory(category: Category) {
-    this.dataHandler.updateCategory(category).subscribe(() => {
+    this.categoryService.updateCategory(category).subscribe(() => {
       this.onSelectCategory(this.selectedCategory);
     });
   }
 
   private onDeleteCategory(category: Category) {
-    this.dataHandler.deleteCategory(category.id).subscribe(cat => {
+    this.categoryService.deleteCategory(category.id).subscribe(cat => {
       this.selectedCategory = null; // открываем категорию "Все"
       this.categoryMap.delete(cat); // не забыть удалить категорию из карты
       this.onSearchCategory(this.searchCategoryText);
@@ -74,13 +80,13 @@ export class AppComponent implements OnInit {
 
   private onSearchCategory(title: string) {
     this.searchCategoryText = title;
-    this.dataHandler.searchCategories(title).subscribe(categories => {
+    this.categoryService.searchCategories(title).subscribe(categories => {
       this.categories = categories;
     });
   }
 
   private updateCategories() {
-    this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+    this.categoryService.getAllCategories().subscribe(categories => this.categories = categories);
   }
 
   private fillCategories() {
