@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Priority} from "../../model/priority";
 import {MatDialogRef} from "@angular/material/dialog";
-import {DataHandlerService} from "../../service/data-handler.service";
 import {PriorityService} from "../../service/priority.service";
 
 @Component({

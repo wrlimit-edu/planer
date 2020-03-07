@@ -22,7 +22,9 @@ export class StatisticCardComponent implements OnInit {
 
   @Input()
   title: string;
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

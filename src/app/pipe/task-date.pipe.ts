@@ -17,7 +17,7 @@ export class TaskDatePipe extends DatePipe implements PipeTransform {
 
     const currentDate = new Date();
 
-    return date.getSeconds().toString();
+    //return date.getSeconds().toString();
 
     /*
     console.log(currentDate.valueOf());

@@ -11,23 +11,23 @@ export class PriorityService {
 
   constructor(private http: HttpClient) { }
 
-  addPriority(priority: Priority): Observable<any> {
-    return this.http.post('http://localhost:8889/api/priority/create', priority);
+  addPriority(priority: Priority): Observable<Priority> {
+    return this.http.post<Priority>('http://localhost:8889/api/priority/create', priority);
   }
 
-  getPriority(id: number): Observable<any> {
-    return this.http.get('http://localhost:8889/api/priority/get/' + id);
+  getPriority(id: number): Observable<Priority> {
+    return this.http.get<Priority>('http://localhost:8889/api/priority/get/' + id);
   }
 
-  updatePriority(priority: Priority): Observable<any> {
-    return this.http.post('http://localhost:8889/api/priority/update', priority);
+  updatePriority(priority: Priority): Observable<Priority> {
+    return this.http.post<Priority>('http://localhost:8889/api/priority/update', priority);
   }
 
-  deletePriority(id: number): Observable<any> {
-    return this.http.get('http://localhost:8889/api/priority/delete/' + id);
+  deletePriority(id: number): Observable<Priority> {
+    return this.http.get<Priority>('http://localhost:8889/api/priority/delete/' + id);
   }
 
-  getAllPriorities(): Observable<any> {
-    return this.http.get('http://localhost:8889/api/priority/list');
+  getAllPriorities(): Observable<Priority[]> {
+    return this.http.get<Priority[]>('http://localhost:8889/api/priority/list');
   }
 }

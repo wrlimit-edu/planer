@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {CategoryComponent} from './view/category/category.component';
-import {DataHandlerService} from './service/data-handler.service';
 import {TaskComponent} from './view/task/task.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditTaskDialogComponent} from './dialog/edit-task-dialog/edit-task-dialog.component';
@@ -81,11 +80,7 @@ registerLocaleData(localeRu);
     ColorPickerModule,
     HttpClientModule
   ],
-  providers: [
-    DataHandlerService,
-    CategoryService,
-    PriorityService
-  ],
+  providers: [],
   entryComponents: [
     EditTaskDialogComponent,
     ConfirmDialogComponent,

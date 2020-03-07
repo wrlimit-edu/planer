@@ -1,12 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Task} from "./model/task";
 import {Category} from "./model/category";
-import {DataHandlerService} from "./service/data-handler.service";
 import {Priority} from "./model/priority";
 import {zip} from "rxjs";
 import {concatMap, map} from "rxjs/operators";
 import {PriorityService} from "./service/priority.service";
 import {CategoryService} from "./service/category.service";
+import {TaskService} from "./service/task.service";
 
 @Component({
   selector: 'app-root',
@@ -32,16 +32,16 @@ export class AppComponent implements OnInit {
   private categoryMap = new Map<Category, number>();
 
   constructor(
-    private dataHandler: DataHandlerService,
     private categoryService: CategoryService,
-    private priorityService: PriorityService
+    private priorityService: PriorityService,
+    private taskService: TaskService
   ) { }
 
   ngOnInit(): void {
     this.categoryService.getAllCategories().subscribe(categories => this.categories = categories);
     this.priorityService.getAllPriorities().subscribe(priorities => this.priorities = priorities);
-    this.fillCategories();
-    this.onSelectCategory(null);
+    //this.fillCategories();
+    //this.onSelectCategory(null);
   }
 
   /* CATEGORY */
@@ -52,14 +52,12 @@ export class AppComponent implements OnInit {
 
   private onSelectCategory(category: Category) {
     this.selectedCategory = category;
-    this.dataHandler.searchTasks(
+    this.taskService.searchTasks(
       this.selectedCategory,
       null,
       null,
       null
-    ).subscribe(tasks => {
-      this.tasks = tasks;
-    });
+    )
     this.updateTasksAndStat();
   }
 
@@ -89,23 +87,24 @@ export class AppComponent implements OnInit {
     this.categoryService.getAllCategories().subscribe(categories => this.categories = categories);
   }
 
+
   private fillCategories() {
     if (this.categoryMap) {
       this.categoryMap.clear();
     }
     this.categories = this.categories.sort((a, b) => a.name.localeCompare(b.name));
     this.categories.forEach(cat => {
-      this.dataHandler.getUncompletedCountInCategory(cat).subscribe(count => this.categoryMap.set(cat, count));
+      this.taskService.getUncompletedCountInCategory(cat).subscribe(count => this.categoryMap.set(cat, count));
     });
   }
 
   /* TASK */
 
   private onAddTask(task: Task) {
-    this.dataHandler.addTask(task).pipe(// сначала добавляем задачу
+    this.taskService.addTask(task).pipe(// сначала добавляем задачу
       concatMap(task => { // используем добавленный task (concatMap - для последовательного выполнения)
           // .. и считаем кол-во задач в категории с учетом добавленной задачи
-          return this.dataHandler.getUncompletedCountInCategory(task.category).pipe(map(count => {
+          return this.taskService.getUncompletedCountInCategory(task.category).pipe(map(count => {
             return ({t: task, count}); // в итоге получаем массив с добавленной задачей и кол-вом задач для категории
           }));
         }
@@ -126,7 +125,7 @@ export class AppComponent implements OnInit {
 
 
   private onUpdateTask(task: Task): void {
-      this.dataHandler.updateTask(task).subscribe(() => {
+      this.taskService.updateTask(task).subscribe(() => {
         this.fillCategories();
         this.updateTasksAndStat();
       });
@@ -135,9 +134,9 @@ export class AppComponent implements OnInit {
 
   private onDeleteTask(task: Task) {
 
-    this.dataHandler.deleteTask(task.id).pipe(
+    this.taskService.deleteTask(task.id).pipe(
       concatMap(task => {
-          return this.dataHandler.getUncompletedCountInCategory(task.category).pipe(map(count => {
+          return this.taskService.getUncompletedCountInCategory(task.category).pipe(map(count => {
             return ({t: task, count});
           }));
         }
@@ -175,7 +174,7 @@ export class AppComponent implements OnInit {
   }
 
   private updateTasks() {
-    this.dataHandler.searchTasks(
+    this.taskService.searchTasks(
       this.selectedCategory,
       this.searchTaskText,
       this.statusFilter,
@@ -191,11 +190,12 @@ export class AppComponent implements OnInit {
   }
 
   private updateStat() {
+    /*
     zip(
-      this.dataHandler.getTotalCountInCategory(this.selectedCategory),
-      this.dataHandler.getCompletedCountInCategory(this.selectedCategory),
-      this.dataHandler.getUncompletedCountInCategory(this.selectedCategory),
-      this.dataHandler.getUncompletedTotalCount())
+      this.taskService.getTotalCountInCategory(this.selectedCategory),
+      this.taskService.getCompletedCountInCategory(this.selectedCategory),
+      this.taskService.getUncompletedCountInCategory(this.selectedCategory),
+      this.taskService.getUncompletedTotalCount())
 
       .subscribe(array => {
         this.totalTasksCountInCategory = array[0];
@@ -203,5 +203,7 @@ export class AppComponent implements OnInit {
         this.uncompletedCountInCategory = array[2];
         this.uncompletedTotalTasksCount = array[3]; // нужно для категории Все
       });
+      
+     */
   }
 }

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DataHandlerService} from '../../service/data-handler.service';
 import {Category} from '../../model/category';
 import {EditCategoryDialogComponent} from "../../dialog/edit-category-dialog/edit-category-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -57,8 +56,7 @@ export class CategoryComponent implements OnInit {
   @Input()
   uncompletedTotal: number;
 
-  constructor(private dataHandlerService: DataHandlerService, private dialog: MatDialog) {
-  }
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
   }
@@ -98,17 +96,10 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  // поиск категории
-
-  // поиск категории
   private search() {
     if (this.searchCategoryTitle == null ) {
       return;
     }
     this.searchCategory.emit(this.searchCategoryTitle);
-  }
-
-  showEditIcon(param) {
-
   }
 }

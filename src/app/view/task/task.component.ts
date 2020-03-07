@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DataHandlerService} from '../../service/data-handler.service';
 import {Task} from 'src/app/model/task';
 import {MatSort, MatTableDataSource, MatPaginator, MatDialog} from '@angular/material';
 import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
@@ -62,11 +61,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @Output()
   addTask = new EventEmitter<Task>();
 
-  constructor(private dataHandlerService: DataHandlerService, private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
-    //this.dataHandlerService.getAllTasks().subscribe(tasks => this.tasks = tasks);
-
     this.dataSource = new MatTableDataSource();
     this.refreshTable();
   }
@@ -210,7 +207,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   }
 
   private openAddTaskDialog() {
-    const task = new Task(null, '', false, null, this.selectedCategory);
+    const task = new Task(null, '', this.selectedCategory, null, false, new Date);
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи', OperType.ADD ]});
     dialogRef.afterClosed().subscribe(result => {
       if (result) { // если нажали ОК и есть результат

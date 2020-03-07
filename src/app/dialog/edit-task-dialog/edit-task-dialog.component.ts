@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DataHandlerService} from "../../service/data-handler.service";
 import {Task} from "../../model/task";
 import {Category} from "../../model/category";
 import {Priority} from "../../model/priority";
 import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
 import {PriorityService} from "../../service/priority.service";
 import {CategoryService} from "../../service/category.service";
+import {TaskService} from "../../service/task.service";
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -29,9 +29,9 @@ export class EditTaskDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Task, string],
-    private dataHandler: DataHandlerService,
     private categoryService: CategoryService,
     private priorityService: PriorityService,
+    private taskService: TaskService,
     private dialog: MatDialog
   ) {
   }

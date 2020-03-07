@@ -49,17 +49,29 @@
           <p>Все задачи<span class="uncompleted-count"> {{uncompletedTotal}}</span></p>
         </a>
       </li>
+
+      <li class="nav-item pointer"
+          *ngFor="let category of categories;"
+          (click)="showTasksByCategory(category)"
+          [class.active]="category === selectedCategory"
+      >
+        <a class="nav-link">
+          <i class="material-icons">{{ category.icon }}</i>
+          <p>{{ category.name }}</p>
+        </a>
+      </li>
+
+      <!--
       <li
-        (click)="showTasksByCategory(mapValue.key)" (mouseenter)="showEditIcon(index)"
-        (mouseleave)="showEditIcon(null)"
+        (click)="showTasksByCategory(mapValue.key)"
         *ngFor="let mapValue of selectedCategoryMap | keyvalue; let index = index"
         [class.active]="mapValue.key === selectedCategory"
         class="nav-item pointer"
       >
         <a class="nav-link">
-          <!--          название категории-->
+
           <span class="category-title">{{mapValue.key.name}}</span>
-          <!--         кнопка редактирования категории-->
+
           <span class="edit-category-icon-area">
 
             <mat-icon
@@ -69,10 +81,11 @@
             >edit
             </mat-icon>
           </span>
-          <!--сколько невыполненных задач-->
+
           <span class="uncompleted-count"> {{mapValue.value}}</span>
         </a>
       </li>
+      -->
 
     </ul>
   </div>

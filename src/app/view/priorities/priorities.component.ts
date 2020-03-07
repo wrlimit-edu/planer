@@ -5,7 +5,6 @@ import {EditCategoryDialogComponent} from '../../dialog/edit-category-dialog/edi
 import {OperType} from '../../dialog/oper-type.enum';
 import {ConfirmDialogComponent} from '../../dialog/confirm-dialog/confirm-dialog.component';
 import {EditPriorityDialogComponent} from "../../dialog/edit-priority-dialog/edit-priority-dialog.component";
-//import {EditPriorityDialogComponent} from '../../dialog/edit-priority-dialog/edit-priority-dialog.component';
 
 @Component({
   selector: 'app-priorities',
@@ -33,8 +32,8 @@ export class PrioritiesComponent implements OnInit {
 
   // -------------------------------------------------------------------------
 
-  constructor( private dialog: MatDialog // для открытия нового диалогового окна (из текущего))
-  ) {
+  constructor( private dialog: MatDialog) {
+
   }
 
   ngOnInit(): void {
